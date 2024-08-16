@@ -6,65 +6,72 @@ public class Player : MonoBehaviour
 {
     private Rigidbody2D rb;
 
-    public float speed = 10f;
-    public float jumpForce = 10f;
-    public float fallForce = 10f;
+    public float smallSpeed = 20f;
+    public float bigSpeed = 10f;
 
-    public float maxJumpTime = 1f;
+    public float scaleSpeed = 4f;
 
-    private float jumpTime = 0;
-    private bool isJumping = false;
+    public float smallScale = 1;
+    public float bigScale = 2;
 
-    private bool isGrounded = false;
+    private bool isSmall = true;
+    private float scale;
+
+    private bool scaling = false;
+
+    private float cameraBaseSize;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        cameraBaseSize = Camera.main.orthographicSize;
+
+        scale = smallScale;
+        transform.localScale = Vector3.one * scale;
+        isSmall = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        float x = Input.GetAxisRaw("Horizontal") * speed;
-        rb.velocity = new(x, rb.velocity.y);
+        float x = Input.GetAxisRaw("Horizontal");
+        float y = Input.GetAxisRaw("Vertical");
+        Vector2 direction = new(x, y);
+        rb.velocity = (isSmall ? smallSpeed : bigSpeed) * direction.normalized;
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (Input.GetButtonDown("ScalePlayer"))
         {
-            isJumping = true;
-            jumpTime = 0;
-            rb.velocity = new(rb.velocity.x, jumpForce);
+            scaling = true;
         }
 
-        if (isJumping && jumpTime < maxJumpTime && Input.GetKey(KeyCode.Space))
+        if (scaling && isSmall)
         {
-            jumpTime += Time.deltaTime;
-            rb.velocity = new(rb.velocity.x, jumpForce);
-        }
+            scale = Mathf.Clamp(scale + (scaleSpeed * Time.deltaTime), smallScale, bigScale);
+            UpdateScales();
 
-        if (isJumping && (jumpTime >= maxJumpTime || Input.GetKeyUp(KeyCode.Space)))
-        {
-            isJumping = false;
-            rb.velocity = new(rb.velocity.x, 0);
+            if (scale == bigScale)
+            {
+                isSmall = false;
+                scaling = false;
+            }
         }
+        else if (scaling && !isSmall)
+        {
+            scale = Mathf.Clamp(scale - (scaleSpeed * Time.deltaTime), smallScale, bigScale);
+            UpdateScales();
 
-        if (!isJumping && !isGrounded && Input.GetAxisRaw("Vertical") == -1)
-        {
-            rb.gravityScale = fallForce;
-        }
-        else
-        {
-            rb.gravityScale = 1;
+            if (scale == smallScale)
+            {
+                isSmall = true;
+                scaling = false;
+            }
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void UpdateScales()
     {
-        isGrounded = true;
-    }
-
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        isGrounded = false;
+        transform.localScale = Vector3.one * scale;
+        Camera.main.orthographicSize = cameraBaseSize * scale;
     }
 }

@@ -70,6 +70,11 @@ public class Player : MonoBehaviour
                 isScaling = false;
             }
         }
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            Dash();
+        }
     }
 
     private void UpdateBig()
@@ -85,6 +90,21 @@ public class Player : MonoBehaviour
                 isScaling = false;
             }
         }
+
+        if (Input.GetButtonDown("Fire1"))
+        {
+            PewPew();
+        }
+    }
+
+    private void Dash()
+    {
+        Debug.Log("DASH");
+    }
+
+    private void PewPew()
+    {
+        Debug.Log("PEW PEW PEW");
     }
 
     private void RefreshScales()

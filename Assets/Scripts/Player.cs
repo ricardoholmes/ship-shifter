@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 
     public float smallSpeed = 20f;
     public float bigSpeed = 10f;
+    private float speed;
 
     public float scaleSpeed = 4f;
 
@@ -17,7 +18,7 @@ public class Player : MonoBehaviour
     private bool isSmall = true;
     private float scale;
 
-    private bool scaling = false;
+    private bool isScaling = false;
 
     private float cameraBaseSize;
 
@@ -30,6 +31,7 @@ public class Player : MonoBehaviour
         scale = smallScale;
         transform.localScale = Vector3.one * scale;
         isSmall = true;
+        speed = smallSpeed;
     }
 
     // Update is called once per frame
@@ -38,40 +40,60 @@ public class Player : MonoBehaviour
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
         Vector2 direction = new(x, y);
-        rb.velocity = (isSmall ? smallSpeed : bigSpeed) * direction.normalized;
+        rb.velocity = speed * direction.normalized;
 
         if (Input.GetButtonDown("ScalePlayer"))
         {
-            scaling = true;
+            isScaling = true;
         }
 
-        if (scaling && isSmall)
+        if (isSmall)
+        {
+            UpdateSmall();
+        }
+        else
+        {
+            UpdateBig();
+        }
+    }
+
+    private void UpdateSmall()
+    {
+        if (isScaling)
         {
             scale = Mathf.Clamp(scale + (scaleSpeed * Time.deltaTime), smallScale, bigScale);
-            UpdateScales();
+            RefreshScales();
 
             if (scale == bigScale)
             {
                 isSmall = false;
-                scaling = false;
-            }
-        }
-        else if (scaling && !isSmall)
-        {
-            scale = Mathf.Clamp(scale - (scaleSpeed * Time.deltaTime), smallScale, bigScale);
-            UpdateScales();
-
-            if (scale == smallScale)
-            {
-                isSmall = true;
-                scaling = false;
+                isScaling = false;
             }
         }
     }
 
-    private void UpdateScales()
+    private void UpdateBig()
+    {
+        if (isScaling)
+        {
+            scale = Mathf.Clamp(scale - (scaleSpeed * Time.deltaTime), smallScale, bigScale);
+            RefreshScales();
+
+            if (scale == smallScale)
+            {
+                isSmall = true;
+                isScaling = false;
+            }
+        }
+    }
+
+    private void RefreshScales()
     {
         transform.localScale = Vector3.one * scale;
-        Camera.main.orthographicSize = cameraBaseSize * scale;
+
+        float cameraScale = (scale + smallScale) / 2;
+        Camera.main.orthographicSize = cameraBaseSize * cameraScale;
+
+        speed = smallSpeed + (bigSpeed - smallSpeed) * (scale - smallScale) / (bigScale - smallScale);
     }
 }

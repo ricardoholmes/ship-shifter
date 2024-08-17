@@ -48,26 +48,48 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-
+        // move
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
         Vector2 direction = new(x, y);
         rb2d.velocity = speed * direction.normalized;
 
+        // scale
         if (Input.GetButtonDown("ScalePlayer"))
         {
             isScaling = true;
         }
 
-        if (isSmall)
+        if (isScaling)
         {
-            UpdateSmall();
-        }
-        else
-        {
-            UpdateBig();
+            float scaleAmount = scaleSpeed * Time.deltaTime;
+            scaleAmount *= isSmall ? 1 : -1;
+            scale = Mathf.Clamp(scale + scaleAmount, smallScale, bigScale);
+            RefreshScales();
+
+            // will only trigger when complete, since this is after scale has been incremented/decremented
+            if (scale == smallScale || scale == bigScale)
+            {
+                isSmall = scale == smallScale;
+                isScaling = false;
+            }
         }
 
+        // use ability (dash/fire)
+        if (!isScaling && Time.time >= cooldownEndTime && Input.GetButtonDown("Fire1"))
+        {
+            cooldownEndTime = Time.time + cooldown;
+            if (isSmall)
+            {
+                Dash();
+            }
+            else
+            {
+                PewPew();
+            }
+        }
+
+        // visualise cooldown
         if (cooldownEndTime > Time.time)
         {
             if (!cooldownImage.activeSelf)
@@ -80,48 +102,6 @@ public class Player : MonoBehaviour
         else if (cooldownImage.activeSelf)
         {
             cooldownImage.SetActive(false);
-        }
-    }
-
-    private void UpdateSmall()
-    {
-        if (isScaling)
-        {
-            scale = Mathf.Clamp(scale + (scaleSpeed * Time.deltaTime), smallScale, bigScale);
-            RefreshScales();
-
-            if (scale == bigScale)
-            {
-                isSmall = false;
-                isScaling = false;
-            }
-        }
-
-        if (Input.GetButtonDown("Fire1") && Time.time >= cooldownEndTime)
-        {
-            Dash();
-            cooldownEndTime = Time.time + cooldown;
-        }
-    }
-
-    private void UpdateBig()
-    {
-        if (isScaling)
-        {
-            scale = Mathf.Clamp(scale - (scaleSpeed * Time.deltaTime), smallScale, bigScale);
-            RefreshScales();
-
-            if (scale == smallScale)
-            {
-                isSmall = true;
-                isScaling = false;
-            }
-        }
-
-        if (Input.GetButtonDown("Fire1") && Time.time >= cooldownEndTime)
-        {
-            PewPew();
-            cooldownEndTime = Time.time + cooldown;
         }
     }
 

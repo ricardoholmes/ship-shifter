@@ -659,6 +659,7 @@ MonoBehaviour:
   smallScale: 1
   bigScale: 2
   bulletPrefab: {fileID: 7507313667777822259, guid: d77d332574578f2448d8785f92a8f464, type: 3}
+  dashDistance: 5
 --- !u!61 &1235315383
 BoxCollider2D:
   m_ObjectHideFlags: 0

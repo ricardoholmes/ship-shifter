@@ -12,7 +12,10 @@ public class ExtraTimePickup : MonoBehaviour
         if (collision.CompareTag("Player"))
         {
             LevelController.IncrementScore(pointsOnPickup);
+            LevelController.ShowScoreGained(pointsOnPickup, transform.position);
+
             LevelController.AddTime(timeIncreaseSeconds);
+
             Destroy(gameObject);
         }
     }

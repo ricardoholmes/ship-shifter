@@ -54,13 +54,13 @@ public class LevelController : MonoBehaviour
         Transform parent = instance.worldSpaceCanvas;
         GameObject pointsGainedObject = Instantiate(prefab, worldPosition, Quaternion.identity, parent);
         TextMeshProUGUI text = pointsGainedObject.GetComponent<TextMeshProUGUI>();
-        text.text = scoreGained.ToString();
+        text.text = (scoreGained * 100).ToString();
     }
 
     public static void IncrementScore(int increment)
     {
         instance.score += increment;
-        instance.scoreText.text = instance.score.ToString();
+        instance.scoreText.text = (instance.score * 100).ToString();
     }
 
     public static void AddTime(int increment)

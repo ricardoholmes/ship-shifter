@@ -31,6 +31,7 @@ public class PointsText : MonoBehaviour
         // percent complete
         float p = timeShown / timeVisible;
         color.a = 1 - p;
+        text.color = color;
 
         transform.position += riseSpeed * Time.deltaTime * Vector3.up;
     }

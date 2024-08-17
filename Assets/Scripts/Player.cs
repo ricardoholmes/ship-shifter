@@ -29,6 +29,8 @@ public class Player : MonoBehaviour
 
     private float cooldownEndTime = 0;
 
+    public GameObject cooldownImage;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +46,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
         Vector2 direction = new(x, y);
@@ -61,6 +64,20 @@ public class Player : MonoBehaviour
         else
         {
             UpdateBig();
+        }
+
+        if (cooldownEndTime > Time.time)
+        {
+            if (!cooldownImage.activeSelf)
+            {
+                cooldownImage.SetActive(true);
+            }
+            float percentageRemaining = (cooldownEndTime - Time.time) / cooldown;
+            cooldownImage.transform.localScale = new(percentageRemaining, 1);
+        }
+        else if (cooldownImage.activeSelf)
+        {
+            cooldownImage.SetActive(false);
         }
     }
 

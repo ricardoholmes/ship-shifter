@@ -35,9 +35,10 @@ public class Bullet : MonoBehaviour
         {
             Player.Kill();
         }
-        else
+        else if (collision.gameObject.CompareTag("Enemy"))
         {
-            Destroy(collision.gameObject);
+            Enemy enemy = collision.gameObject.GetComponent<Enemy>();
+            enemy.Kill();
         }
         Destroy(gameObject);
     }

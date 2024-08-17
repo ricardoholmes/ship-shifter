@@ -25,6 +25,10 @@ public class Player : MonoBehaviour
     public GameObject bulletPrefab;
     public float dashDistance = 5f;
 
+    public float cooldown = 0.5f; // same for dash and fire
+
+    private float cooldownEndTime = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -74,9 +78,10 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && Time.time >= cooldownEndTime)
         {
             Dash();
+            cooldownEndTime = Time.time + cooldown;
         }
     }
 
@@ -94,9 +99,10 @@ public class Player : MonoBehaviour
             }
         }
 
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire1") && Time.time >= cooldownEndTime)
         {
             PewPew();
+            cooldownEndTime = Time.time + cooldown;
         }
     }
 
@@ -105,7 +111,6 @@ public class Player : MonoBehaviour
         Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
         Vector3 dashVector = direction.normalized * dashDistance;
         transform.position += dashVector;
-        Debug.Log("DASH");
     }
 
     private void PewPew()

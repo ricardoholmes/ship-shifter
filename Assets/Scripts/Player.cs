@@ -125,7 +125,11 @@ public class Player : MonoBehaviour
 
     private void Dash()
     {
-        Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        Vector2 direction = rb2d.velocity;
+        if (direction.sqrMagnitude == 0)
+        {
+            direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        }
         Vector3 dashVector = direction.normalized * dashDistance;
         transform.position += dashVector;
     }

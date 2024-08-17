@@ -31,11 +31,15 @@ public class Player : MonoBehaviour
 
     public GameObject cooldownImage;
 
+    public static Transform instance;
+
     // Start is called before the first frame update
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
         cameraBaseSize = Camera.main.orthographicSize;
+
+        instance = transform;
 
         scale = smallScale;
         transform.localScale = Vector3.one * scale;

@@ -14,6 +14,9 @@ public class LevelController : MonoBehaviour
     public float startTimeRemaining = 120;
     private static float timeRemaining;
 
+    public Transform worldSpaceCanvas;
+    public GameObject scoreGainedTextPrefab;
+
     private static LevelController instance;
 
     private void Start()
@@ -43,6 +46,15 @@ public class LevelController : MonoBehaviour
         int minutesRemaining = (int)timeRemaining / 60;
         int secondsRemaining = (int)timeRemaining - (minutesRemaining * 60);
         timeLeftText.text = $"{minutesRemaining}:{secondsRemaining:00}";
+    }
+
+    public static void ShowScoreGained(int scoreGained, Vector3 worldPosition)
+    {
+        GameObject prefab = instance.scoreGainedTextPrefab;
+        Transform parent = instance.worldSpaceCanvas;
+        GameObject pointsGainedObject = Instantiate(prefab, worldPosition, Quaternion.identity, parent);
+        TextMeshProUGUI text = pointsGainedObject.GetComponent<TextMeshProUGUI>();
+        text.text = scoreGained.ToString();
     }
 
     public static void IncrementScore(int increment)

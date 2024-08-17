@@ -13,6 +13,7 @@ public class Enemy : MonoBehaviour
     public void Kill()
     {
         LevelController.IncrementScore(pointsOnDeath);
+        LevelController.ShowScoreGained(pointsOnDeath, transform.position);
 
         if (Random.value <= timeDropProbability)
         {

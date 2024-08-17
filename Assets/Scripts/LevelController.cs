@@ -33,6 +33,13 @@ public class LevelController : MonoBehaviour
     private void Update()
     {
         timeRemaining -= Time.deltaTime;
+        if (timeRemaining <= 0)
+        {
+            Debug.Log("no more time oopsies :(");
+            GameOver();
+            return;
+        }
+
         int minutesRemaining = (int)timeRemaining / 60;
         int secondsRemaining = (int)timeRemaining - (minutesRemaining * 60);
         timeLeftText.text = $"{minutesRemaining}:{secondsRemaining:00}";
@@ -51,7 +58,7 @@ public class LevelController : MonoBehaviour
 
     public static void GameOver()
     {
-        Debug.Log("game over oopsies :(");
+        Debug.Log("game over - what the heck!? *shocked*");
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
     }
 }

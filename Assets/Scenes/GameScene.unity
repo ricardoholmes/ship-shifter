@@ -710,7 +710,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 1153918013}
   timeLeftText: {fileID: 755677649}
-  startTime: 120
+  startTimeRemaining: 120
 --- !u!1001 &1079481892
 PrefabInstance:
   m_ObjectHideFlags: 0

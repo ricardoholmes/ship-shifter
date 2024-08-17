@@ -156,5 +156,6 @@ public class Player : MonoBehaviour
     public static void Kill()
     {
         Debug.Log("ded *skull_emoji*x5");
+        LevelController.GameOver();
     }
 }

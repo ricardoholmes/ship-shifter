@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    private Rigidbody2D rb;
+    private Rigidbody2D rb2d;
 
     public float smallSpeed = 20f;
     public float bigSpeed = 10f;
@@ -22,10 +22,12 @@ public class Player : MonoBehaviour
 
     private float cameraBaseSize;
 
+    public GameObject bulletPrefab;
+
     // Start is called before the first frame update
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        rb2d = GetComponent<Rigidbody2D>();
         cameraBaseSize = Camera.main.orthographicSize;
 
         scale = smallScale;
@@ -40,7 +42,7 @@ public class Player : MonoBehaviour
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
         Vector2 direction = new(x, y);
-        rb.velocity = speed * direction.normalized;
+        rb2d.velocity = speed * direction.normalized;
 
         if (Input.GetButtonDown("ScalePlayer"))
         {
@@ -104,7 +106,9 @@ public class Player : MonoBehaviour
 
     private void PewPew()
     {
-        Debug.Log("PEW PEW PEW");
+        Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        GameObject bulletObject = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        bulletObject.GetComponent<Bullet>().direction = direction.normalized;
     }
 
     private void RefreshScales()

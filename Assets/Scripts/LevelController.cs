@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelController : MonoBehaviour
 {
@@ -41,5 +42,16 @@ public class LevelController : MonoBehaviour
     {
         instance.score += increment;
         instance.scoreText.text = instance.score.ToString();
+    }
+
+    public static void AddTime(int increment)
+    {
+        timeRemaining += increment;
+    }
+
+    public static void GameOver()
+    {
+        Debug.Log("game over oopsies :(");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
     }
 }

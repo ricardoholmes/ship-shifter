@@ -26,6 +26,6 @@ public class LevelController : MonoBehaviour
     public static void IncrementScore(int increment)
     {
         instance.score += increment;
-        instance.scoreText.text = increment.ToString();
+        instance.scoreText.text = instance.score.ToString();
     }
 }

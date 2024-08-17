@@ -132,26 +132,31 @@ public class Player : MonoBehaviour
         Vector2 direction = rb2d.velocity;
         if (direction.sqrMagnitude == 0)
         {
-            direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+            direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - base.transform.position;
         }
         Vector3 dashVector = direction.normalized * dashDistance;
-        transform.position += dashVector;
+        base.transform.position += dashVector;
     }
 
     private void PewPew()
     {
-        Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-        GameObject bulletObject = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - base.transform.position;
+        GameObject bulletObject = Instantiate(bulletPrefab, base.transform.position, Quaternion.identity);
         bulletObject.GetComponent<Bullet>().direction = direction.normalized;
     }
 
     private void RefreshScales()
     {
-        transform.localScale = Vector3.one * scale;
+        base.transform.localScale = Vector3.one * scale;
 
         float cameraScale = (scale + smallScale) / 2;
         Camera.main.orthographicSize = cameraBaseSize * cameraScale;
 
         speed = smallSpeed + (bigSpeed - smallSpeed) * (scale - smallScale) / (bigScale - smallScale);
+    }
+
+    public static void Kill()
+    {
+        Debug.Log("ded *skull_emoji*x5");
     }
 }

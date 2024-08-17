@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 9083844569847868729}
   - component: {fileID: 5866133397351486214}
   - component: {fileID: 6212978052622474245}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MeleeEnemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.735849, g: 0.010412939, b: 0.010412939, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

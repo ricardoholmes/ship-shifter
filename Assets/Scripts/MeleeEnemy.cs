@@ -19,4 +19,12 @@ public class MeleeEnemy : MonoBehaviour
         Vector3 direction = targetPos - transform.position;
         rb2d.velocity = direction.normalized * speed;
     }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Player.Kill();
+        }
+    }
 }

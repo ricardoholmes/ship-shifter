@@ -6,8 +6,12 @@ using UnityEngine;
 public class LevelController : MonoBehaviour
 {
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI timeLeftText;
 
-    private int score = 0;
+    private int score;
+
+    public float startTimeRemaining = 120;
+    private static float timeRemaining;
 
     private static LevelController instance;
 
@@ -15,12 +19,22 @@ public class LevelController : MonoBehaviour
     {
         if (instance != null)
         {
-            Debug.Log("Multiple instances of LevelController found");
+            Debug.LogWarning("Multiple instances of LevelController found");
             Destroy(gameObject);
             return;
         }
 
         instance = this;
+        timeRemaining = startTimeRemaining;
+        score = 0;
+    }
+
+    private void Update()
+    {
+        timeRemaining -= Time.deltaTime;
+        int minutesRemaining = (int)timeRemaining / 60;
+        int secondsRemaining = (int)timeRemaining - (minutesRemaining * 60);
+        timeLeftText.text = $"{minutesRemaining}:{secondsRemaining:00}";
     }
 
     public static void IncrementScore(int increment)

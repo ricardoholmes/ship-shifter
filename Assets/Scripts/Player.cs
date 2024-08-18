@@ -33,6 +33,8 @@ public class Player : MonoBehaviour
 
     public static Transform instance;
 
+    public GameObject thrusters; // for the fire coming out of the thrusters
+
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -55,6 +57,7 @@ public class Player : MonoBehaviour
         direction = direction.normalized;
         rb2d.velocity = speed * direction;
 
+        thrusters.SetActive(direction.sqrMagnitude > 0);
         if (direction.sqrMagnitude > 0)
         {
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;

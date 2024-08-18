@@ -459,39 +459,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 79f8a6e49fa933143a5eafa51c8eb687, type: 3}
---- !u!1 &611491421
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 611491422}
-  m_Layer: 3
-  m_Name: Thrusters
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &611491422
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 611491421}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1207841044}
-  - {fileID: 1501575625}
-  m_Father: {fileID: 1235315386}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &755677647
 GameObject:
   m_ObjectHideFlags: 0
@@ -677,7 +644,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 1153918013}
   timeLeftText: {fileID: 755677649}
-  startTimeRemaining: 120
+  startTimeRemaining: 61
   worldSpaceCanvas: {fileID: 1379243328}
   scoreGainedTextPrefab: {fileID: 8259238601431952629, guid: e77942935fc85284091458647924f0b7, type: 3}
 --- !u!1001 &1079481892
@@ -886,8 +853,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1207841044}
   - component: {fileID: 1207841045}
+  - component: {fileID: 1207841046}
   m_Layer: 3
-  m_Name: Fire
+  m_Name: ThrusterLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -903,10 +871,10 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.0028049601, w: 0.99999607}
   m_LocalPosition: {x: -0.403, y: -2.1433, z: 0}
-  m_LocalScale: {x: 0.13491406, y: 0.2195861, z: 0.13491406}
+  m_LocalScale: {x: 0.13491412, y: 0.2195861, z: 0.1349141}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 611491422}
+  m_Father: {fileID: 1235315386}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.321}
 --- !u!212 &1207841045
 SpriteRenderer:
@@ -949,17 +917,38 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 1dfce3c3728f16749a17c31dd8ce7061, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 70c56398f2c2f414f85275f458051579, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 4, y: 4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &1207841046
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1207841043}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bfa569647f1d8384b8f50b5f7324760a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1235315381
 GameObject:
   m_ObjectHideFlags: 0
@@ -992,8 +981,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6e45bc0808cf4d45b91dd4f6c5897fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  smallSpeed: 15
-  bigSpeed: 5
+  smallMaxSpeed: 15
+  bigMaxSpeed: 5
+  smallAcceleration: 15
+  bigAcceleration: 5
+  smallDeceleration: 30
+  bigDeceleration: 10
+  smallTurnSpeed: 360
+  bigTurnSpeed: 180
   scaleSpeed: 4
   smallScale: 1
   bigScale: 2
@@ -1001,7 +996,8 @@ MonoBehaviour:
   dashDistance: 5
   cooldown: 0.5
   cooldownImage: {fileID: 1269511614}
-  thrusters: {fileID: 611491421}
+  thrusterLeft: {fileID: 1207841043}
+  thrusterRight: {fileID: 1501575624}
 --- !u!61 &1235315383
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1060,7 +1056,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
+  m_LinearDrag: 1
   m_AngularDrag: 0.05
   m_GravityScale: 1
   m_Material: {fileID: 0}
@@ -1072,7 +1068,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!212 &1235315385
 SpriteRenderer:
@@ -1139,7 +1135,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 611491422}
+  - {fileID: 1207841044}
+  - {fileID: 1501575625}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1256056069 stripped
@@ -1333,8 +1330,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1501575625}
   - component: {fileID: 1501575626}
+  - component: {fileID: 1501575627}
   m_Layer: 3
-  m_Name: Fire (1)
+  m_Name: ThrusterRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1350,10 +1348,10 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0.0028049601, w: 0.99999607}
   m_LocalPosition: {x: 0.428, y: -2.1581, z: 0}
-  m_LocalScale: {x: 0.13491406, y: 0.22695242, z: 0.13491406}
+  m_LocalScale: {x: 0.13491407, y: 0.2269524, z: 0.13491406}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 611491422}
+  m_Father: {fileID: 1235315386}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: -0.321}
 --- !u!212 &1501575626
 SpriteRenderer:
@@ -1396,17 +1394,38 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 1dfce3c3728f16749a17c31dd8ce7061, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 70c56398f2c2f414f85275f458051579, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 4, y: 4}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!95 &1501575627
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1501575624}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: bfa569647f1d8384b8f50b5f7324760a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &1863764145
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -6,9 +6,19 @@ public class Player : MonoBehaviour
 {
     private Rigidbody2D rb2d;
 
-    public float smallSpeed = 20f;
-    public float bigSpeed = 10f;
-    private float speed;
+    public float smallMaxSpeed = 15f;
+    public float bigMaxSpeed = 5f;
+    public float smallAcceleration = 15f;
+    public float bigAcceleration = 5f;
+    public float smallDeceleration = 30f;
+    public float bigDeceleration = 10f;
+    public float smallTurnSpeed = 360f;
+    public float bigTurnSpeed = 180f;
+
+    private float maxSpeed;
+    private float acceleration;
+    private float deceleration;
+    private float turnSpeed;
 
     public float scaleSpeed = 4f;
 
@@ -33,7 +43,8 @@ public class Player : MonoBehaviour
 
     public static Transform instance;
 
-    public GameObject thrusters; // for the fire coming out of the thrusters
+    public GameObject thrusterLeft; // for the fire coming out of the thrusters
+    public GameObject thrusterRight; // for the fire coming out of the thrusters
 
     void Start()
     {
@@ -42,27 +53,40 @@ public class Player : MonoBehaviour
 
         instance = transform;
 
-        scale = smallScale;
-        transform.localScale = Vector3.one * scale;
         isSmall = true;
-        speed = smallSpeed;
+        scale = smallScale;
+        RefreshScales();
     }
 
     void Update()
     {
-        // move
+        // turn
         float x = Input.GetAxisRaw("Horizontal");
-        float y = Input.GetAxisRaw("Vertical");
-        Vector2 direction = new(x, y);
-        direction = direction.normalized;
-        rb2d.velocity = speed * direction;
-
-        thrusters.SetActive(direction.sqrMagnitude > 0);
-        if (direction.sqrMagnitude > 0)
+        if (x != 0)
         {
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            transform.rotation = Quaternion.Euler(0, 0, angle - 90);
+            float angle = x * turnSpeed * Time.deltaTime;
+            transform.Rotate(-Vector3.forward, angle);
         }
+
+        // move
+        float y = Input.GetAxisRaw("Vertical");
+        if (y > 0)
+        {
+            float speed = rb2d.velocity.magnitude;
+            speed = Mathf.Clamp(speed + acceleration * Time.deltaTime, 0, maxSpeed);
+            Vector3 direction = transform.up;
+            rb2d.velocity = direction * speed;
+        }
+        else if (y < 0)
+        {
+            float speed = rb2d.velocity.magnitude;
+            speed = Mathf.Clamp(speed - deceleration * Time.deltaTime, 0, maxSpeed);
+            Vector3 direction = transform.up;
+            rb2d.velocity = direction * speed;
+        }
+
+        thrusterLeft.SetActive(y > 0 || x > 0);
+        thrusterRight.SetActive(y > 0 || x < 0);
 
         // scale
         if (Input.GetButtonDown("ScalePlayer"))
@@ -137,10 +161,15 @@ public class Player : MonoBehaviour
     {
         transform.localScale = Vector3.one * scale;
 
-        float cameraScale = (scale + smallScale) / 2;
+        float transformationCompleted = (scale - smallScale) / (bigScale - smallScale); // [0,1]
+
+        float cameraScale = 1 + transformationCompleted / 2; // [1,1.5]
         Camera.main.orthographicSize = cameraBaseSize * cameraScale;
 
-        speed = smallSpeed + (bigSpeed - smallSpeed) * (scale - smallScale) / (bigScale - smallScale);
+        maxSpeed = smallMaxSpeed + (bigMaxSpeed - smallMaxSpeed) * transformationCompleted;
+        acceleration = smallAcceleration + (bigAcceleration - smallAcceleration) * transformationCompleted;
+        deceleration = smallDeceleration + (bigDeceleration - smallDeceleration) * transformationCompleted;
+        turnSpeed = smallTurnSpeed + (bigTurnSpeed - smallTurnSpeed) * transformationCompleted;
     }
 
     public static void Kill()

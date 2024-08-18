@@ -22,8 +22,8 @@ public class Player : MonoBehaviour
 
     public float scaleSpeed = 4f;
 
-    public float smallScale = 1;
-    public float bigScale = 2;
+    public float smallScale = 1f;
+    public float bigScale = 2f;
 
     private bool isSmall = true;
     private float scale;
@@ -33,11 +33,16 @@ public class Player : MonoBehaviour
     private float cameraBaseSize;
 
     public GameObject bulletPrefab;
-    public float dashDistance = 5f;
 
-    public float cooldown = 0.5f; // same for dash and fire
+    public float shotCooldown = 0.5f;
+    private float shotCooldownEndTime = 0f;
 
-    private float cooldownEndTime = 0;
+    public float maxBoostTime = 0.5f;
+    private float timeBoosted = 0f;
+    private bool isBoosting = false;
+
+    public float boostMaxSpeed = 50f;
+    public float boostAcceleration = 100f;
 
     public GameObject cooldownImage;
 
@@ -53,6 +58,7 @@ public class Player : MonoBehaviour
 
         instance = transform;
 
+        isScaling = false;
         isSmall = true;
         scale = smallScale;
         RefreshScales();
@@ -91,6 +97,11 @@ public class Player : MonoBehaviour
         // scale
         if (Input.GetButtonDown("ScalePlayer"))
         {
+            timeBoosted = 0;
+            isBoosting = false;
+
+            shotCooldownEndTime = 0;
+
             isScaling = true;
         }
 
@@ -110,44 +121,65 @@ public class Player : MonoBehaviour
         }
 
         // use ability (dash/fire)
-        if (!isScaling && Time.time >= cooldownEndTime && Input.GetButtonDown("Fire1"))
+        if (!isScaling && !isSmall && Time.time >= shotCooldownEndTime && Input.GetButtonDown("Fire1"))
         {
-            cooldownEndTime = Time.time + cooldown;
-            if (isSmall)
+            shotCooldownEndTime = Time.time + shotCooldown;
+            PewPew();
+        }
+        else if (!isScaling && isSmall)
+        {
+            if (Input.GetButtonDown("Fire1") && timeBoosted < maxBoostTime)
             {
-                Dash();
+                isBoosting = true;
+                thrusterLeft.GetComponent<Animator>().SetBool("isBoosting", true);
+                thrusterRight.GetComponent<Animator>().SetBool("isBoosting", true);
+
+                maxSpeed = boostMaxSpeed;
+                acceleration = boostAcceleration;
             }
-            else
+            else if (Input.GetButtonUp("Fire1") || (isBoosting && timeBoosted > maxBoostTime))
             {
-                PewPew();
+                isBoosting = false;
+                thrusterLeft.GetComponent<Animator>().SetBool("isBoosting", false);
+                thrusterRight.GetComponent<Animator>().SetBool("isBoosting", false);
+
+                maxSpeed = smallMaxSpeed;
+                acceleration = smallAcceleration;
+            }
+            else if (Input.GetButton("Fire1") && isBoosting)
+            {
+                timeBoosted += Time.deltaTime;
             }
         }
 
+        if (!isBoosting)
+        {
+            timeBoosted = Mathf.Clamp(timeBoosted - Time.deltaTime, 0, maxBoostTime);
+        }
+
         // visualise cooldown
-        if (cooldownEndTime > Time.time)
+        if (isSmall && (isBoosting || timeBoosted > 0))
         {
             if (!cooldownImage.activeSelf)
             {
                 cooldownImage.SetActive(true);
             }
-            float percentageRemaining = (cooldownEndTime - Time.time) / cooldown;
+            float percentageDone = timeBoosted / maxBoostTime;
+            cooldownImage.transform.localScale = new(1 - percentageDone, 1);
+        }
+        else if (!isSmall && shotCooldownEndTime > Time.time)
+        {
+            if (!cooldownImage.activeSelf)
+            {
+                cooldownImage.SetActive(true);
+            }
+            float percentageRemaining = (shotCooldownEndTime - Time.time) / shotCooldown;
             cooldownImage.transform.localScale = new(percentageRemaining, 1);
         }
         else if (cooldownImage.activeSelf)
         {
             cooldownImage.SetActive(false);
         }
-    }
-
-    private void Dash()
-    {
-        Vector2 direction = rb2d.velocity;
-        if (direction.sqrMagnitude == 0)
-        {
-            direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-        }
-        Vector3 dashVector = direction.normalized * dashDistance;
-        transform.position += dashVector;
     }
 
     private void PewPew()

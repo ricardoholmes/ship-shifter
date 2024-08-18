@@ -21,6 +21,10 @@ public class RangedEnemy : Enemy
     void Update()
     {
         Vector3 toPlayer = Player.instance.position - transform.position;
+
+        float angle = Mathf.Atan2(toPlayer.y, toPlayer.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0, 0, angle + 90);
+
         if (toPlayer.sqrMagnitude > stopApproachDistance * stopApproachDistance)
         {
             nextShotTime = 0;

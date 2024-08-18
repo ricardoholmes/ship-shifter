@@ -172,7 +172,7 @@ public class Player : MonoBehaviour
                 cooldownImage.SetActive(true);
             }
             float percentageRemaining = (shotCooldownEndTime - Time.time) / shotCooldown;
-            cooldownImage.transform.localScale = new(percentageRemaining, 1);
+            cooldownImage.transform.localScale = new(1 - percentageRemaining, 1);
         }
         else if (cooldownImage.activeSelf)
         {

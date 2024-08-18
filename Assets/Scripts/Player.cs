@@ -144,7 +144,7 @@ public class Player : MonoBehaviour
                 maxSpeed = smallMaxSpeed;
                 acceleration = smallAcceleration;
             }
-            else if (Input.GetButton("Fire1") && isBoosting)
+            else if (Input.GetButton("Fire1") && isBoosting && (x != 0 || y > 0)) // only if actually moving
             {
                 timeBoosted += Time.deltaTime;
             }

@@ -993,8 +993,10 @@ MonoBehaviour:
   smallScale: 1
   bigScale: 2
   bulletPrefab: {fileID: 7507313667777822259, guid: d77d332574578f2448d8785f92a8f464, type: 3}
-  dashDistance: 5
-  cooldown: 0.5
+  shotCooldown: 0.5
+  maxBoostTime: 1
+  boostMaxSpeed: 50
+  boostAcceleration: 100
   cooldownImage: {fileID: 1269511614}
   thrusterLeft: {fileID: 1207841043}
   thrusterRight: {fileID: 1501575624}

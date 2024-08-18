@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
     public float shotCooldown = 0.5f;
     private float shotCooldownEndTime = 0f;
 
-    public float maxBoostTime = 0.5f;
+    public float maxBoostTime = 1f;
     private float timeBoosted = 0f;
     private bool isBoosting = false;
 
@@ -93,6 +93,8 @@ public class Player : MonoBehaviour
 
         thrusterLeft.SetActive(y > 0 || x > 0);
         thrusterRight.SetActive(y > 0 || x < 0);
+        thrusterLeft.GetComponent<Animator>().SetBool("isBoosting", isBoosting);
+        thrusterRight.GetComponent<Animator>().SetBool("isBoosting", isBoosting);
 
         // scale
         if (Input.GetButtonDown("ScalePlayer"))
@@ -131,8 +133,6 @@ public class Player : MonoBehaviour
             if (Input.GetButtonDown("Fire1") && timeBoosted < maxBoostTime)
             {
                 isBoosting = true;
-                thrusterLeft.GetComponent<Animator>().SetBool("isBoosting", true);
-                thrusterRight.GetComponent<Animator>().SetBool("isBoosting", true);
 
                 maxSpeed = boostMaxSpeed;
                 acceleration = boostAcceleration;
@@ -140,8 +140,6 @@ public class Player : MonoBehaviour
             else if (Input.GetButtonUp("Fire1") || (isBoosting && timeBoosted > maxBoostTime))
             {
                 isBoosting = false;
-                thrusterLeft.GetComponent<Animator>().SetBool("isBoosting", false);
-                thrusterRight.GetComponent<Animator>().SetBool("isBoosting", false);
 
                 maxSpeed = smallMaxSpeed;
                 acceleration = smallAcceleration;

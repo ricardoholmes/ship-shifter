@@ -52,7 +52,14 @@ public class Player : MonoBehaviour
         float x = Input.GetAxisRaw("Horizontal");
         float y = Input.GetAxisRaw("Vertical");
         Vector2 direction = new(x, y);
-        rb2d.velocity = speed * direction.normalized;
+        direction = direction.normalized;
+        rb2d.velocity = speed * direction;
+
+        if (direction.sqrMagnitude > 0)
+        {
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            transform.rotation = Quaternion.Euler(0, 0, angle - 90);
+        }
 
         // scale
         if (Input.GetButtonDown("ScalePlayer"))
@@ -110,22 +117,22 @@ public class Player : MonoBehaviour
         Vector2 direction = rb2d.velocity;
         if (direction.sqrMagnitude == 0)
         {
-            direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - base.transform.position;
+            direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
         }
         Vector3 dashVector = direction.normalized * dashDistance;
-        base.transform.position += dashVector;
+        transform.position += dashVector;
     }
 
     private void PewPew()
     {
-        Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - base.transform.position;
-        GameObject bulletObject = Instantiate(bulletPrefab, base.transform.position, Quaternion.identity);
+        Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
+        GameObject bulletObject = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
         bulletObject.GetComponent<Bullet>().direction = direction.normalized;
     }
 
     private void RefreshScales()
     {
-        base.transform.localScale = Vector3.one * scale;
+        transform.localScale = Vector3.one * scale;
 
         float cameraScale = (scale + smallScale) / 2;
         Camera.main.orthographicSize = cameraBaseSize * cameraScale;

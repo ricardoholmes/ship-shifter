@@ -15,20 +15,20 @@ public class GameOver : MonoBehaviour
     private void Awake()
     {
         int recentScore = PlayerPrefs.GetInt("RecentScore", 0);
-        recentScoreText.text = recentScore.ToString();
+        recentScoreText.text = (recentScore * 100).ToString();
 
-        int recentTime = PlayerPrefs.GetInt("RecentTime", 0);
-        int recentTimeMins = recentTime / 60;
-        int recentTimeSecs = recentTime % 60;
-        recentTimeText.text = $"{recentTimeMins}:{recentTimeSecs:00}";
+        float recentTime = PlayerPrefs.GetFloat("RecentTime", 0);
+        int recentTimeMins = (int)recentTime / 60;
+        int recentTimeSecs = (int)recentTime - (recentTimeMins * 60);
+        recentTimeText.text = $"{recentTimeMins:00}:{recentTimeSecs:00}";
 
         int bestScore = PlayerPrefs.GetInt("BestScore", 0);
-        bestScoreText.text = bestScore.ToString();
+        bestScoreText.text = (bestScore * 100).ToString();
 
-        int bestTime = PlayerPrefs.GetInt("BestTime", 0);
-        int bestTimeMins = bestTime / 60;
-        int bestTimeSecs = bestTime % 60;
-        bestTimeText.text = $"{bestTimeMins}:{bestTimeSecs:00}";
+        float bestTime = PlayerPrefs.GetFloat("BestTime", 0);
+        int bestTimeMins = (int)bestTime / 60;
+        int bestTimeSecs = (int)bestTime - (bestTimeMins * 60);
+        bestTimeText.text = $"{bestTimeMins:00}:{bestTimeSecs:00}";
     }
 
     public void PlayAgain()

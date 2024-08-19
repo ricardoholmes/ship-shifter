@@ -12,7 +12,8 @@ public class LevelController : MonoBehaviour
     private int score;
 
     public float startTimeRemaining = 120;
-    private static float timeRemaining;
+    private float timeRemaining;
+    private float timeElapsed;
 
     public Transform worldSpaceCanvas;
     public GameObject scoreGainedTextPrefab;
@@ -32,6 +33,7 @@ public class LevelController : MonoBehaviour
 
         instance = this;
         timeRemaining = startTimeRemaining;
+        timeElapsed = 0;
         score = 0;
     }
 
@@ -49,6 +51,7 @@ public class LevelController : MonoBehaviour
             }
         }
 
+        timeElapsed += Time.deltaTime;
         timeRemaining -= Time.deltaTime;
         if (timeRemaining <= 0)
         {
@@ -79,13 +82,29 @@ public class LevelController : MonoBehaviour
 
     public static void AddTime(int increment)
     {
-        timeRemaining += increment;
+        instance.timeRemaining += increment;
     }
 
     public static void GameOver()
     {
-        Debug.Log("game over - what the heck!? *shocked*");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+        PlayerPrefs.SetInt("RecentScore", instance.score);
+        PlayerPrefs.SetFloat("RecentTime", instance.timeElapsed);
+
+        int bestScore = PlayerPrefs.GetInt("BestScore", 0);
+        if (instance.score > bestScore)
+        {
+            PlayerPrefs.SetInt("BestScore", instance.score);
+        }
+
+        float bestTime = PlayerPrefs.GetFloat("BestTime", 0);
+        if (instance.timeElapsed > bestTime)
+        {
+            PlayerPrefs.SetFloat("BestTime", instance.timeElapsed);
+        }
+
+        PlayerPrefs.Save();
+
+        SceneManager.LoadScene("GameOver", LoadSceneMode.Single);
     }
 
     public void PauseGame()

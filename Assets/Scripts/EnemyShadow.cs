@@ -8,7 +8,7 @@ public class EnemyShadow : MonoBehaviour
 
     private void Awake()
     {
-        offset = transform.localPosition;
+        offset = transform.position - transform.parent.position;
     }
 
     private void FixedUpdate()

@@ -12,18 +12,10 @@ public class RangedEnemy : Enemy
     public float shotCooldown = 1f;
     public GameObject bulletPrefab;
 
-    private float nextShotTime;
+    private float nextShotTime = 0;
 
     public Transform endOfBarrel;
     public AudioSource shotAudioSource;
-
-    private NavMeshAgent agent;
-
-    void Awake()
-    {
-        agent = GetComponent<NavMeshAgent>();
-        nextShotTime = 0;
-    }
 
     void Update()
     {

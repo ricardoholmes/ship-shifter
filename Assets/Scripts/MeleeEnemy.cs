@@ -5,13 +5,6 @@ using UnityEngine.AI;
 
 public class MeleeEnemy : Enemy
 {
-    private NavMeshAgent agent;
-
-    void Awake()
-    {
-        agent = GetComponent<NavMeshAgent>();
-    }
-
     void Update()
     {
         Vector3 targetPos = Player.instance.position;

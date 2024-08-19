@@ -33,12 +33,12 @@ public class Bullet : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Player.Kill();
+            Player.Hit();
         }
         else if (collision.gameObject.CompareTag("Enemy"))
         {
             Enemy enemy = collision.gameObject.GetComponent<Enemy>();
-            enemy.Kill();
+            enemy.Hit();
         }
         Destroy(gameObject);
     }

@@ -10,8 +10,10 @@ public class Enemy : MonoBehaviour
     public float timeDropProbability = 0.05f;
     public GameObject extraTimePickupPrefab;
 
-    public void Kill()
+    public void Hit()
     {
+        GetComponent<AudioSource>().Play();
+
         LevelController.IncrementScore(pointsOnDeath);
         LevelController.ShowScoreGained(pointsOnDeath, transform.position);
 

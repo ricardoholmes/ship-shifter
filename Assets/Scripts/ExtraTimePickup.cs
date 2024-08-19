@@ -16,7 +16,9 @@ public class ExtraTimePickup : MonoBehaviour
 
             LevelController.AddTime(timeIncreaseSeconds);
 
-            Destroy(gameObject);
+            GetComponent<AudioSource>().Play();
+            Destroy(gameObject, 1);
+            enabled = false;
         }
     }
 }

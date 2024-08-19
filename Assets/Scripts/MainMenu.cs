@@ -15,6 +15,7 @@ public class MainMenu : MonoBehaviour
 
     public void Exit()
     {
+        GetComponent<AudioSource>().Play();
         Application.Quit();
     }
 }

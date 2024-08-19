@@ -56,6 +56,11 @@ public class Player : MonoBehaviour
     public Transform cannonCenter;
     public Transform endOfBarrel;
 
+    public AudioSource cannonFireAudioSource;
+    public AudioSource thrusterAudioSource;
+    public AudioClip normalThrusterAudioClip;
+    public AudioClip boostingThrusterAudioClip;
+
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -67,6 +72,8 @@ public class Player : MonoBehaviour
         isSmall = true;
         scale = smallScale;
         RefreshScales();
+
+        thrusterAudioSource.clip = normalThrusterAudioClip;
     }
 
     void Update()
@@ -100,6 +107,15 @@ public class Player : MonoBehaviour
         thrusterRight.SetActive(y > 0 || x < 0);
         thrusterLeft.GetComponent<Animator>().SetBool("isBoosting", isBoosting);
         thrusterRight.GetComponent<Animator>().SetBool("isBoosting", isBoosting);
+
+        if ((x != 0 || y > 0) && !thrusterAudioSource.isPlaying)
+        {
+            thrusterAudioSource.Play();
+        }
+        else if (!(x != 0 || y > 0) && thrusterAudioSource.isPlaying)
+        {
+            thrusterAudioSource.Stop();
+        }
 
         // face cannon towards mouse
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
@@ -147,6 +163,7 @@ public class Player : MonoBehaviour
             if (Input.GetButtonDown("Fire1") && timeBoosted < maxBoostTime)
             {
                 isBoosting = true;
+                thrusterAudioSource.clip = boostingThrusterAudioClip;
 
                 maxSpeed = boostMaxSpeed;
                 acceleration = boostAcceleration;
@@ -154,6 +171,7 @@ public class Player : MonoBehaviour
             else if (Input.GetButtonUp("Fire1") || (isBoosting && timeBoosted > maxBoostTime))
             {
                 isBoosting = false;
+                thrusterAudioSource.clip = normalThrusterAudioClip;
 
                 maxSpeed = smallMaxSpeed;
                 acceleration = smallAcceleration;
@@ -196,6 +214,8 @@ public class Player : MonoBehaviour
 
     private void PewPew()
     {
+        cannon.GetComponent<AudioSource>().Play(); // play fire sound effect
+
         Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - cannonCenter.position;
         GameObject bulletObject = Instantiate(bulletPrefab, endOfBarrel.position, Quaternion.identity);
         bulletObject.GetComponent<Bullet>().direction = direction.normalized;
@@ -218,8 +238,10 @@ public class Player : MonoBehaviour
         turnSpeed = smallTurnSpeed + (bigTurnSpeed - smallTurnSpeed) * transformationCompleted;
     }
 
-    public static void Kill()
+    public static void Hit()
     {
+        instance.GetComponent<AudioSource>().Play();
+
         Debug.Log("ded *skull_emoji*x5");
         LevelController.GameOver();
     }

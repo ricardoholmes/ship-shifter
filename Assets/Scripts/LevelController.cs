@@ -22,6 +22,8 @@ public class LevelController : MonoBehaviour
 
     public GameObject pauseScreen;
 
+    public AudioSource audioSource; // for playing button press sound
+
     private void Start()
     {
         if (instance != null)
@@ -115,18 +117,24 @@ public class LevelController : MonoBehaviour
 
     public void ResumeGame()
     {
+        audioSource.Play();
+
         Time.timeScale = 1;
         pauseScreen.SetActive(false);
     }
 
     public void Restart()
     {
+        audioSource.Play();
+
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
     }
 
     public void GoToMainMenu()
     {
+        audioSource.Play();
+
         Time.timeScale = 1;
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }

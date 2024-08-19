@@ -24,7 +24,7 @@ public class MeleeEnemy : Enemy
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            Player.Kill();
+            Player.Hit();
         }
     }
 }

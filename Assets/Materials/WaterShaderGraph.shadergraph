@@ -1314,7 +1314,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "CellDensity",
     "m_StageCapability": 3,
-    "m_Value": 60.0,
+    "m_Value": 40.0,
     "m_DefaultValue": 5.0,
     "m_Labels": []
 }

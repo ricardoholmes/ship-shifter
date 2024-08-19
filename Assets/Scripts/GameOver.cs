@@ -33,11 +33,13 @@ public class GameOver : MonoBehaviour
 
     public void PlayAgain()
     {
+        GetComponent<AudioSource>().Play();
         SceneManager.LoadScene("Game", LoadSceneMode.Single);
     }
 
     public void Home()
     {
+        GetComponent<AudioSource>().Play();
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 }

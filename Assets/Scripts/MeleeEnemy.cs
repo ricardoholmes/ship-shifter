@@ -1,23 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class MeleeEnemy : Enemy
 {
-    public float speed = 10f;
-
-    private Rigidbody2D rb2d;
+    private NavMeshAgent agent;
 
     void Awake()
     {
-        rb2d = GetComponent<Rigidbody2D>();
+        agent = GetComponent<NavMeshAgent>();
     }
 
     void Update()
     {
         Vector3 targetPos = Player.instance.position;
-        Vector3 direction = targetPos - transform.position;
-        rb2d.velocity = direction.normalized * speed;
+        //Vector3 direction = targetPos - transform.position;
+        //rb2d.velocity = direction.normalized * speed;
+        agent.SetDestination(targetPos);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

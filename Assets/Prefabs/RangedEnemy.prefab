@@ -239,6 +239,7 @@ GameObject:
   - component: {fileID: 5815814770064129690}
   - component: {fileID: 4482899676099401471}
   - component: {fileID: 123129485400814688}
+  - component: {fileID: 1489850012410253605}
   m_Layer: 6
   m_Name: RangedEnemy
   m_TagString: Enemy
@@ -408,6 +409,7 @@ MonoBehaviour:
   extraTimePickupPrefab: {fileID: 52221873700147394, guid: 5e53521c524a7a64d9f9407b68a86f8a, type: 3}
   speed: 5
   stopApproachDistance: 20
+  firingDistance: 40
   shotCooldown: 1
   bulletPrefab: {fileID: 7507313667777822259, guid: b533cbddb46385c4f92de4dc77ee7468, type: 3}
   endOfBarrel: {fileID: 7127424342776836729}
@@ -508,3 +510,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!195 &1489850012410253605
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6264787958773165531}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 1.0200001
+  m_Speed: 8
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 20
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 1.0867999
+  m_BaseOffset: 0.54339993
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4

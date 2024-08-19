@@ -19,6 +19,8 @@ public class LevelController : MonoBehaviour
 
     private static LevelController instance;
 
+    public GameObject pauseScreen;
+
     private void Start()
     {
         if (instance != null)
@@ -35,6 +37,18 @@ public class LevelController : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (pauseScreen.activeSelf)
+            {
+                ResumeGame();
+            }
+            else
+            {
+                PauseGame();
+            }
+        }
+
         timeRemaining -= Time.deltaTime;
         if (timeRemaining <= 0)
         {
@@ -72,5 +86,29 @@ public class LevelController : MonoBehaviour
     {
         Debug.Log("game over - what the heck!? *shocked*");
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0;
+        pauseScreen.SetActive(true);
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1;
+        pauseScreen.SetActive(false);
+    }
+
+    public void Restart()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+    }
+
+    public void GoToMainMenu()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 }

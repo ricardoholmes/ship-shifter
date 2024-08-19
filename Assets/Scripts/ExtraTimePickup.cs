@@ -18,6 +18,7 @@ public class ExtraTimePickup : MonoBehaviour
 
             GetComponent<AudioSource>().Play();
             Destroy(gameObject, 1);
+            GetComponent<SpriteRenderer>().enabled = false;
             enabled = false;
         }
     }

@@ -12,8 +12,6 @@ public class Enemy : MonoBehaviour
 
     public void Hit()
     {
-        GetComponent<AudioSource>().Play();
-
         LevelController.IncrementScore(pointsOnDeath);
         LevelController.ShowScoreGained(pointsOnDeath, transform.position);
 
@@ -22,6 +20,11 @@ public class Enemy : MonoBehaviour
             Instantiate(extraTimePickupPrefab, transform.position, Quaternion.identity, null);
         }
 
-        Destroy(gameObject);
+        Destroy(gameObject, 1);
+        GetComponent<AudioSource>().Play();
+
+        GetComponent<SpriteRenderer>().enabled = false;
+        GetComponent<Collider2D>().enabled = false;
+        enabled = false;
     }
 }

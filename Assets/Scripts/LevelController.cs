@@ -22,7 +22,7 @@ public class LevelController : MonoBehaviour
 
     public GameObject pauseScreen;
 
-    public AudioSource audioSource; // for playing button press sound
+    private AudioSource audioSource; // for playing button press sound
 
     private void Start()
     {
@@ -34,6 +34,7 @@ public class LevelController : MonoBehaviour
         }
 
         instance = this;
+        audioSource = GetComponent<AudioSource>();
         timeRemaining = startTimeRemaining;
         timeElapsed = 0;
         score = 0;

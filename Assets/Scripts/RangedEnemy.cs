@@ -13,6 +13,9 @@ public class RangedEnemy : Enemy
     private Rigidbody2D rb2d;
     private float nextShotTime;
 
+    public Transform endOfBarrel;
+    public AudioSource shotAudioSource;
+
     void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -43,8 +46,10 @@ public class RangedEnemy : Enemy
 
     private void ShootAtPlayer()
     {
+        shotAudioSource.Play();
+
         Vector2 direction = Player.instance.position - transform.position;
-        GameObject bulletObject = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        GameObject bulletObject = Instantiate(bulletPrefab, endOfBarrel.position, Quaternion.identity);
         bulletObject.GetComponent<Bullet>().direction = direction.normalized;
     }
 }

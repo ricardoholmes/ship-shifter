@@ -9,14 +9,12 @@ public class MainMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            Debug.Log("game");
             SceneManager.LoadScene("Game", LoadSceneMode.Single);
         }
     }
 
     public void Exit()
     {
-        Debug.Log("quit");
         Application.Quit();
     }
 }

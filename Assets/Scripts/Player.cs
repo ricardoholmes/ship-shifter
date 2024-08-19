@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -51,6 +52,10 @@ public class Player : MonoBehaviour
     public GameObject thrusterLeft; // for the fire coming out of the thrusters
     public GameObject thrusterRight; // for the fire coming out of the thrusters
 
+    public Transform cannon;
+    public Transform cannonCenter;
+    public Transform endOfBarrel;
+
     void Start()
     {
         rb2d = GetComponent<Rigidbody2D>();
@@ -95,6 +100,15 @@ public class Player : MonoBehaviour
         thrusterRight.SetActive(y > 0 || x < 0);
         thrusterLeft.GetComponent<Animator>().SetBool("isBoosting", isBoosting);
         thrusterRight.GetComponent<Animator>().SetBool("isBoosting", isBoosting);
+
+        // face cannon towards mouse
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2 toMouse = mousePos - cannonCenter.position;
+        if (toMouse.sqrMagnitude > 0)
+        {
+            float angle = Mathf.Atan2(toMouse.y, toMouse.x) * Mathf.Rad2Deg;
+            cannonCenter.rotation = Quaternion.Euler(0, 0, angle - 90);
+        }
 
         // scale
         if (Input.GetButtonDown("ScalePlayer"))
@@ -182,8 +196,8 @@ public class Player : MonoBehaviour
 
     private void PewPew()
     {
-        Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - transform.position;
-        GameObject bulletObject = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
+        Vector2 direction = Camera.main.ScreenToWorldPoint(Input.mousePosition) - cannonCenter.position;
+        GameObject bulletObject = Instantiate(bulletPrefab, endOfBarrel.position, Quaternion.identity);
         bulletObject.GetComponent<Bullet>().direction = direction.normalized;
     }
 
@@ -192,6 +206,8 @@ public class Player : MonoBehaviour
         transform.localScale = Vector3.one * scale;
 
         float transformationCompleted = (scale - smallScale) / (bigScale - smallScale); // [0,1]
+
+        cannon.localScale = Vector3.one * transformationCompleted;
 
         float cameraScale = 1 + transformationCompleted / 2; // [1,1.5]
         Camera.main.orthographicSize = cameraBaseSize * cameraScale;

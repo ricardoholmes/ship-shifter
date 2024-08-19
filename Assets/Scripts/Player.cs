@@ -56,14 +56,22 @@ public class Player : MonoBehaviour
     public Transform cannonCenter;
     public Transform endOfBarrel;
 
+    private AudioSource audioSource;
+
     public AudioSource cannonFireAudioSource;
     public AudioSource thrusterAudioSource;
     public AudioClip normalThrusterAudioClip;
     public AudioClip boostingThrusterAudioClip;
 
-    void Start()
+    public GameObject healthIndicator;
+    public int maxHealth = 3;
+    private int health;
+
+    private void Awake()
     {
         rb2d = GetComponent<Rigidbody2D>();
+        audioSource = GetComponent<AudioSource>();
+
         cameraBaseSize = Camera.main.orthographicSize;
 
         instance = transform;
@@ -73,6 +81,9 @@ public class Player : MonoBehaviour
         scale = smallScale;
         RefreshScales();
 
+        health = maxHealth;
+
+        isBoosting = false;
         thrusterAudioSource.clip = normalThrusterAudioClip;
     }
 
@@ -238,11 +249,19 @@ public class Player : MonoBehaviour
         turnSpeed = smallTurnSpeed + (bigTurnSpeed - smallTurnSpeed) * transformationCompleted;
     }
 
-    public static void Hit()
+    public void Hit()
     {
-        instance.GetComponent<AudioSource>().Play();
+        health--;
+        audioSource.Play();
 
-        Debug.Log("ded *skull_emoji*x5");
-        LevelController.GameOver();
+        if (health > 0)
+        {
+            float percentageHealth = (float)health / maxHealth;
+            healthIndicator.transform.localScale = new(percentageHealth, 1);
+        }
+        else
+        {
+            LevelController.GameOver();
+        }
     }
 }

@@ -5,8 +5,6 @@ using UnityEngine.AI;
 
 public class RangedEnemy : Enemy
 {
-    public float speed = 7f;
-    public float stopApproachDistance = 10f;
     public float firingDistance = 20f;
 
     public float shotCooldown = 1f;

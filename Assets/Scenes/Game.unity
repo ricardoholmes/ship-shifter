@@ -5489,7 +5489,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialMaxEnemies: 5
   timeBetweenMaxEnemyIncrease: 10
-  minPercentExistingEnemies: 0.9
+  minPercentExistingEnemies: 0.75
   enemyPrefabs:
   - {fileID: 3062845962908470746, guid: bbaa6b6dfb3e3e045937918a048929fe, type: 3}
   - {fileID: 6264787958773165531, guid: 79f8a6e49fa933143a5eafa51c8eb687, type: 3}

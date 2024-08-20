@@ -149,8 +149,11 @@ public class LevelController : MonoBehaviour
     {
         audioSource.Play();
 
-        Time.timeScale = 1;
         pauseScreen.SetActive(false);
+        if (!howToPlayScreen.activeSelf)
+        {
+            Time.timeScale = 1;
+        }
     }
 
     public void Restart()

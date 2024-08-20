@@ -142,6 +142,7 @@ public class Player : MonoBehaviour
         {
             timeBoosted = 0;
             isBoosting = false;
+            thrusterAudioSource.clip = normalThrusterAudioClip;
 
             shotCooldownEndTime = 0;
 

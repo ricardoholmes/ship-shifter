@@ -17,11 +17,15 @@ public class MainMenu : MonoBehaviour
     public Sprite muteSfxSprite;
     public Sprite unmuteSfxSprite;
 
+    AudioSource audioSource;
+
     private bool musicMuted;
     private bool sfxMuted;
 
     private void Awake()
     {
+        audioSource = GetComponent<AudioSource>();
+
         audioMixer.GetFloat("musicVolume", out float musicVol);
         musicMuted = musicVol == -80;
         muteMusicButton.sprite = musicMuted ? unmuteMusicSprite : muteMusicSprite;
@@ -31,22 +35,21 @@ public class MainMenu : MonoBehaviour
         muteSfxButton.sprite = sfxMuted ? unmuteSfxSprite : muteSfxSprite;
     }
 
-    private void Update()
+    public void Play()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SceneManager.LoadScene("Game", LoadSceneMode.Single);
-        }
+        audioSource.Play();
+        SceneManager.LoadScene("Game", LoadSceneMode.Single);
     }
 
     public void Exit()
     {
-        GetComponent<AudioSource>().Play();
+        audioSource.Play();
         Application.Quit();
     }
 
     public void ToggleMuteMusic()
     {
+        audioSource.Play();
         musicMuted = !musicMuted;
         audioMixer.SetFloat("musicVolume", musicMuted ? -80 : 0);
         muteMusicButton.sprite = musicMuted ? unmuteMusicSprite : muteMusicSprite;
@@ -54,6 +57,7 @@ public class MainMenu : MonoBehaviour
 
     public void ToggleMuteSfx()
     {
+        audioSource.Play();
         sfxMuted = !sfxMuted;
         audioMixer.SetFloat("sfxVolume", sfxMuted ? -80 : -12);
         muteSfxButton.sprite = sfxMuted ? unmuteSfxSprite : muteSfxSprite;

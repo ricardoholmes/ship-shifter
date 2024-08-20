@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21149ed901759554c839f62f0d2e0727, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timeIncreaseSeconds: 10
+  timeIncreaseSeconds: 15
   pointsOnPickup: 3
 --- !u!82 &7458213780791169050
 AudioSource:

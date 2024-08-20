@@ -481,12 +481,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pointsOnDeath: 7
-  timeDropProbability: 0.1
+  timeDropProbability: 0.5
   extraTimePickupPrefab: {fileID: 52221873700147394, guid: 5e53521c524a7a64d9f9407b68a86f8a, type: 3}
   healthIndicator: {fileID: 5364731002719421055}
   maxHealth: 3
-  speed: 5
-  stopApproachDistance: 20
   firingDistance: 40
   shotCooldown: 1
   bulletPrefab: {fileID: 7507313667777822259, guid: b533cbddb46385c4f92de4dc77ee7468, type: 3}

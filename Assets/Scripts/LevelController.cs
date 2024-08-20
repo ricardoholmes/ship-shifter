@@ -2,7 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class LevelController : MonoBehaviour
 {
@@ -23,6 +25,19 @@ public class LevelController : MonoBehaviour
     public GameObject pauseScreen;
 
     private AudioSource audioSource; // for playing button press sound
+
+    public AudioMixer audioMixer;
+
+    public Image muteMusicButton;
+    public Sprite muteMusicSprite;
+    public Sprite unmuteMusicSprite;
+
+    public Image muteSfxButton;
+    public Sprite muteSfxSprite;
+    public Sprite unmuteSfxSprite;
+
+    private bool musicMuted;
+    private bool sfxMuted;
 
     private void Start()
     {
@@ -58,7 +73,6 @@ public class LevelController : MonoBehaviour
         timeRemaining -= Time.deltaTime;
         if (timeRemaining <= 0)
         {
-            Debug.Log("no more time oopsies :(");
             GameOver();
             return;
         }
@@ -114,6 +128,14 @@ public class LevelController : MonoBehaviour
     {
         Time.timeScale = 0;
         pauseScreen.SetActive(true);
+
+        audioMixer.GetFloat("musicVolume", out float musicVol);
+        musicMuted = musicVol == -80;
+        muteMusicButton.sprite = musicMuted ? unmuteMusicSprite : muteMusicSprite;
+
+        audioMixer.GetFloat("sfxVolume", out float sfxVol);
+        sfxMuted = sfxVol == -80;
+        muteSfxButton.sprite = sfxMuted ? unmuteSfxSprite : muteSfxSprite;
     }
 
     public void ResumeGame()
@@ -138,5 +160,23 @@ public class LevelController : MonoBehaviour
 
         Time.timeScale = 1;
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+    }
+
+    public void ToggleMuteMusic()
+    {
+        audioSource.Play();
+
+        musicMuted = !musicMuted;
+        audioMixer.SetFloat("musicVolume", musicMuted ? -80 : 0);
+        muteMusicButton.sprite = musicMuted ? unmuteMusicSprite : muteMusicSprite;
+    }
+
+    public void ToggleMuteSfx()
+    {
+        audioSource.Play();
+
+        sfxMuted = !sfxMuted;
+        audioMixer.SetFloat("sfxVolume", sfxMuted ? -80 : -12);
+        muteSfxButton.sprite = sfxMuted ? unmuteSfxSprite : muteSfxSprite;
     }
 }

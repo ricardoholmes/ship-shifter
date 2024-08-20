@@ -46,6 +46,8 @@ public class Enemy : MonoBehaviour
 
     private void Die()
     {
+        EnemySpawner.DecrementLivingEnemies();
+
         LevelController.IncrementScore(pointsOnDeath);
         LevelController.ShowScoreGained(pointsOnDeath, transform.position);
 

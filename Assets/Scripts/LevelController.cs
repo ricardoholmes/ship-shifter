@@ -39,6 +39,13 @@ public class LevelController : MonoBehaviour
     private bool musicMuted;
     private bool sfxMuted;
 
+    public GameObject howToPlayScreen;
+
+    private void Awake()
+    {
+        Time.timeScale = 0;
+    }
+
     private void Start()
     {
         if (instance != null)
@@ -178,5 +185,12 @@ public class LevelController : MonoBehaviour
         sfxMuted = !sfxMuted;
         audioMixer.SetFloat("sfxVolume", sfxMuted ? -80 : -12);
         muteSfxButton.sprite = sfxMuted ? unmuteSfxSprite : muteSfxSprite;
+    }
+
+    public void CloseHowToPlay()
+    {
+        Time.timeScale = 1;
+        audioSource.Play();
+        howToPlayScreen.SetActive(false);
     }
 }
